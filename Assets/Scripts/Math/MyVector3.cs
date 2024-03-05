@@ -80,6 +80,30 @@ public class MyVector3
         return dot;
     }
 
+    public static float Vector3Dot(Vector3 vec1, Vector3 vec2, bool shouldNormalise = false)
+    {
+        MyVector3 lhs, rhs;
+
+        lhs = new MyVector3(vec1.x, vec1.y, vec1.z);
+        rhs = new MyVector3(vec2.x, vec2.y, vec2.z);
+        float dot = 0.0f;
+
+        if (shouldNormalise)
+        {
+            MyVector3 normalisedVec1 = lhs.NormalizeVector();
+            MyVector3 normalisedVec2 = rhs.NormalizeVector();
+
+            dot = normalisedVec1.x * normalisedVec2.x + normalisedVec1.y * normalisedVec2.y + normalisedVec1.z * normalisedVec2.z;
+        }
+        else
+        {
+            dot = lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
+        }
+
+
+        return dot;
+    }
+
     public float GetLength()
     {
         float length = 0.0f;
@@ -122,6 +146,13 @@ public class MyVector3
             return target.ConvertToUnityVector();
         }
         return current.ConvertToUnityVector() + a.ConvertToUnityVector() / magnitude * maxDistanceDelta;
+    }
+
+    public static Vector3 RotateVertexAroundAxis(float Angle, Vector3 Axis, Vector3 Vertex)
+    {
+        Vector3 rv = (Vertex * Mathf.Cos(Angle)) + MyVector3.Vector3Dot(Vertex, Axis) * Axis * (1 - Mathf.Cos(Angle)) + MathLib.VectorCrossProduct(Axis, Vertex) * Mathf.Sin(Angle);
+
+        return rv;
     }
 
 }

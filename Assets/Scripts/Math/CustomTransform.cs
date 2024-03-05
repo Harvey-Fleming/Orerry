@@ -22,11 +22,18 @@ public class CustomTransform : MonoBehaviour
     Matrix4by4 M = Matrix4by4.Identity;
     Matrix4by4 inverseM = Matrix4by4.Identity;
 
+    [SerializeField] Vector3 updirection;
+    [SerializeField] Vector3 rightDirection;
+    [SerializeField] Vector3 forwardDirection;
+
     public Vector3 Position { get => position; set => position = value; }
     public Vector3 Rotation { get => rotation; set => rotation = value; }
     public Vector3 Scale { get => scale; set => scale = value; }
     public Matrix4by4 Matrix { get => M;}
     public Matrix4by4 InverseM { get => inverseM; set => inverseM = value; }
+    public Vector3 Updirection { get => updirection; set => updirection = value; }
+    public Vector3 RightDirection { get => rightDirection; set => rightDirection = value; }
+    public Vector3 ForwardDirection { get => forwardDirection; set => forwardDirection = value; }
 
 
     // Start is called before the first frame update
@@ -54,22 +61,35 @@ public class CustomTransform : MonoBehaviour
         Matrix4by4 R, scaleMatrix, translationMatrix;
         TranslateRotateScale(out R, out scaleMatrix, out translationMatrix);
 
-        #region Line Intersection
-        Vector3 GlobalStart = new Vector3(-2, -2, -2);
-        Vector3 GlobalEnd = new Vector3(3, 4, 5);
+        //Calculate forward direction
+        Vector3 eulerAngle = rotation;
 
+        forwardDirection = MathLib.EulerAnglestoDirection(eulerAngle);
+        //Debug.Log(forwardDirection);
+        Debug.DrawRay(position, forwardDirection, Color.red, 0.1f);
+        //Calculate right direction
+        rightDirection = MathLib.VectorCrossProduct(Vector3.up, forwardDirection);
+        Debug.DrawRay(position, rightDirection, Color.blue, 0.1f);
+        updirection = MathLib.VectorCrossProduct(forwardDirection, rightDirection);
+        Debug.DrawRay(position, updirection, Color.yellow, 0.1f);
+
+        //#region Line Intersection
+        //Vector3 GlobalStart = position;
+        //Vector3 GlobalEnd = Vector3.zero;
         inverseM = scaleMatrix.ScaleInverse() * (R.RotationInverse() * translationMatrix.TranslationInverse());
 
-        Vector3 LocalStart = InverseM * GlobalStart;
-        Vector3 LocalEnd = InverseM * GlobalEnd;
+        //Vector3 LocalStart = InverseM * GlobalStart;
+        //Vector3 LocalEnd = InverseM * GlobalEnd;
 
-        Vector3 intersectPoint;
-        if (AABB.LineIntersection(boundingBox, LocalStart, LocalEnd, out intersectPoint))
-        {
-            //Debug.Log("Intersecting! Local Intersection Point " + intersectPoint);
-            //Debug.Log("Global Intersection Point " + (M * intersectPoint));
-        }
-        #endregion
+        //Debug.DrawRay(LocalStart, LocalEnd, Color.red, 0.1f);
+
+        //Vector3 intersectPoint;
+        //if (AABB.LineIntersection(boundingBox, LocalStart, LocalEnd, out intersectPoint))
+        //{
+        //    //Debug.Log("Intersecting! Local Intersection Point " + intersectPoint);
+        //    //Debug.Log("Global Intersection Point " + (M * intersectPoint));
+        //}
+        //#endregion
     }
 
     private void TranslateRotateScale(out Matrix4by4 R, out Matrix4by4 scaleMatrix, out Matrix4by4 translationMatrix)
@@ -98,12 +118,12 @@ public class CustomTransform : MonoBehaviour
         scaleMatrix = new Matrix4by4(new Vector3(1, 0, 0) * Scale.x, new Vector3(0, 1, 0) * Scale.y, new Vector3(0, 0, 1) * Scale.z, Vector3.zero);
         translationMatrix = new Matrix4by4(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Position);
         M = translationMatrix * (R * scaleMatrix);
-        //for (int i = 0; i < transformedVertices.Length; i++)
-        //{
-        //    transformedVertices[i] = M * new Vector4(modelSpaceVertices[i].x, modelSpaceVertices[i].y, modelSpaceVertices[i].z, 1);
-        //}
+        for (int i = 0; i < transformedVertices.Length; i++)
+        {
+            transformedVertices[i] = M * new Vector4(modelSpaceVertices[i].x, modelSpaceVertices[i].y, modelSpaceVertices[i].z, 1);
+        }
 
-        //mesh.vertices = transformedVertices;
+        mesh.vertices = transformedVertices;
 
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();

@@ -38,4 +38,11 @@ public class MathLib : MonoBehaviour
     {
         return vector1 * (1.0f - t) + vector2 * t;
     }
+
+    public static float FloatLerp(float current, float target, float t)
+    {
+        return current * (1.0f - t) + target * t;
+    }
+
+
 }

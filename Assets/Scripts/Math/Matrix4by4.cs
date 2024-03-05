@@ -110,9 +110,9 @@ public class Matrix4by4
     {
         Matrix4by4 rv = Identity;
 
-        rv.values[0, 3] = -rv.values[0, 3];
-        rv.values[1, 3] = -rv.values[1, 3];
-        rv.values[2, 3] = -rv.values[2, 3];
+        rv.values[0, 3] = -values[0, 3];
+        rv.values[1, 3] = -values[1, 3];
+        rv.values[2, 3] = -values[2, 3];
 
         return rv;
     }
@@ -121,9 +121,9 @@ public class Matrix4by4
     {
         Matrix4by4 rv = Identity;
 
-        rv.values[0, 0] = 1.0f / rv.values[0, 0];
-        rv.values[1, 1] = 1.0f / rv.values[1, 1];
-        rv.values[2, 2] = 1.0f / rv.values[2, 2];
+        rv.values[0, 0] = 1.0f / values[0, 0];
+        rv.values[1, 1] = 1.0f / values[1, 1];
+        rv.values[2, 2] = 1.0f / values[2, 2];
 
         return rv;
     }
