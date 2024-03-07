@@ -63,7 +63,7 @@ public class Orbit : MonoBehaviour
             CustomQuaternion newK = q * k * q.Inverse();
 
             Vector3 newP = newK.GetAxis();
-            Debug.Log(newP);
+            //Debug.Log(newP);
 
             cTrans.Position = newP;
             

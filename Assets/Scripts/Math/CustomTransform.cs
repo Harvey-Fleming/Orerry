@@ -57,7 +57,6 @@ public class CustomTransform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        boundingBox = new AABB(new Vector3(0, 0, 0), new Vector3(0.5f, 0.5f, 0.5f));
         Matrix4by4 R, scaleMatrix, translationMatrix;
         TranslateRotateScale(out R, out scaleMatrix, out translationMatrix);
 
@@ -83,12 +82,7 @@ public class CustomTransform : MonoBehaviour
 
         //Debug.DrawRay(LocalStart, LocalEnd, Color.red, 0.1f);
 
-        //Vector3 intersectPoint;
-        //if (AABB.LineIntersection(boundingBox, LocalStart, LocalEnd, out intersectPoint))
-        //{
-        //    //Debug.Log("Intersecting! Local Intersection Point " + intersectPoint);
-        //    //Debug.Log("Global Intersection Point " + (M * intersectPoint));
-        //}
+
         //#endregion
     }
 

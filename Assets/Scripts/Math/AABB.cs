@@ -89,7 +89,26 @@ public class AABB
 
         return true;
     }
-    
+
+    public static bool LineIntersection(AABB Box, Vector3 StartPoint, Vector3 direction, float maxDistance, out Vector3 IntersectionPoint)
+    {
+        float Lowest = 0.0f;
+        float Highest = 1.0f;
+
+        IntersectionPoint = Vector3.zero;
+
+        if (!IntersectingAxis(Vector3.right, Box, StartPoint, direction, ref Lowest, ref Highest))
+            return false;
+        if (!IntersectingAxis(Vector3.up, Box, StartPoint, direction, ref Lowest, ref Highest))
+            return false;
+        if (!IntersectingAxis(Vector3.forward, Box, StartPoint, direction, ref Lowest, ref Highest))
+            return false;
+
+        IntersectionPoint = MathLib.Vec3Lerp(StartPoint, direction, Lowest);
+
+        return true;
+    }
+
     public static bool IntersectingAxis(Vector3 Axis, AABB Box, Vector3 StartPoint, Vector3 EndPoint, ref float lowest, ref float Highest)
     {
         float Minimum = 0.0f, Maximum = 1.0f;

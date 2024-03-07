@@ -21,10 +21,31 @@ public class LookAtCamera : MonoBehaviour
     {
         LookAtTarget();
 
-        if(Input.GetMouseButtonDown(0))
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction, Color.green, 0.1f);
+        if (Input.GetMouseButtonDown(0))
         {
             isZoomed = !isZoomed;
             isZooming = true;
+
+            BoxCollider[] colliders = FindObjectsOfType<BoxCollider>();
+
+            foreach(BoxCollider collider in colliders)
+            {
+                
+
+                ray.direction *= 1000;
+                Vector3 intersectPoint;
+                
+                if (AABB.LineIntersection(collider.AABBCollider, ray.origin,ray.direction , out intersectPoint))
+                {
+                    
+                    Debug.Log("Intersecting! Local Intersection Point " + intersectPoint);
+                    Debug.Log("Global Intersection Point " + (collider.GetComponent<CustomTransform>().Matrix * intersectPoint));
+
+                    target = collider.gameObject;
+                }
+            }
         }
 
         if(isZooming)
