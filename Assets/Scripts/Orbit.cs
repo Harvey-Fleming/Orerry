@@ -16,6 +16,8 @@ public class Orbit : MonoBehaviour
     CustomTransform cTrans;
 
     private float yawAngle = 0f;
+
+    [SerializeField] private bool isDebugEnabled;
     
     public Vector3 OrbitalRotation { get => orbitalRotation; set => orbitalRotation = value; }
 
@@ -54,7 +56,7 @@ public class Orbit : MonoBehaviour
         //Get Forward Vector to Planet
         if(primaryBody != null)
         {
-            yawAngle += Time.deltaTime;
+            yawAngle += Time.deltaTime * TimeManager.instance.TimeScale;
 
             CustomQuaternion q = new CustomQuaternion(yawAngle, primaryBody.GetComponent<CustomTransform>().Updirection);
 
@@ -63,7 +65,10 @@ public class Orbit : MonoBehaviour
             CustomQuaternion newK = q * k * q.Inverse();
 
             Vector3 newP = newK.GetAxis();
-            Debug.Log(newP);
+            if (isDebugEnabled)
+            {
+                Debug.Log(newP);
+            }
 
             cTrans.Position = newP;
             

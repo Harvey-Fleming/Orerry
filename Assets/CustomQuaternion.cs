@@ -63,4 +63,17 @@ public class CustomQuaternion
     {
         return new Vector3(x,y,z);
     }
+
+    public static void RotateAround(CustomTransform transform, Vector3 pivotPoint, Vector3 axis, float angle)
+    {
+        CustomQuaternion rot = new CustomQuaternion(angle, axis);
+
+        CustomQuaternion p = new CustomQuaternion(transform.Position);
+        CustomQuaternion q = new CustomQuaternion(pivotPoint);
+
+
+        CustomQuaternion newK = q * p * q.Inverse();
+        CustomQuaternion newP =  newK * rot;
+        transform.Position = new Vector3(newP.x, newP.y, newP.z);
+    }
 }
