@@ -22,9 +22,9 @@ public class CustomTransform : MonoBehaviour
     Matrix4by4 M = Matrix4by4.Identity;
     Matrix4by4 inverseM = Matrix4by4.Identity;
 
-    [SerializeField] Vector3 updirection;
-    [SerializeField] Vector3 rightDirection;
-    [SerializeField] Vector3 forwardDirection;
+    Vector3 updirection;
+    Vector3 rightDirection;
+    Vector3 forwardDirection;
 
     public Vector3 Position { get => position; set => position = value; }
     public Vector3 Rotation { get => rotation; set => rotation = value; }
@@ -161,42 +161,4 @@ public class CustomTransform : MonoBehaviour
         mesh.RecalculateBounds();
     }
 
-    public void RotateAroundPoint(Vector3 newRot, Vector3 newPos)
-    {
-        Matrix4by4 R, translationMatrix, mtranslationMatrix, returntranslationMatrix;
-        Vector3[] transformedVertices = new Vector3[modelSpaceVertices.Length];
-
-        Matrix4by4 rollMatrix = new Matrix4by4(
-            new Vector3(Mathf.Cos(newRot.z), Mathf.Sin(newRot.z), 0),
-            new Vector3(-Mathf.Sin(newRot.z), Mathf.Cos(newRot.z), 0),
-            new Vector3(0, 0, 1),
-            Vector3.zero);
-
-        Matrix4by4 pitchMatrix = new Matrix4by4(
-            new Vector3(1, 0, 0),
-            new Vector3(0, Mathf.Cos(newRot.x), Mathf.Sin(newRot.x)),
-            new Vector3(0, -Mathf.Sin(newRot.x), Mathf.Cos(newRot.x)),
-            Vector3.zero);
-
-        Matrix4by4 yawMatrix = new Matrix4by4(
-            new Vector3(Mathf.Cos(newRot.y), 0, -Mathf.Sin(newRot.y)),
-            new Vector3(0, 1, 0),
-            new Vector3(Mathf.Sin(newRot.y), 0, Mathf.Cos(newRot.y)),
-            Vector3.zero);
-
-        R = (yawMatrix * (pitchMatrix * rollMatrix));
-        translationMatrix = new Matrix4by4(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), newPos);
-        mtranslationMatrix = new Matrix4by4(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), -newPos);
-        returntranslationMatrix = new Matrix4by4(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), position);
-        M = (translationMatrix * (R * mtranslationMatrix)) * returntranslationMatrix;
-        for (int i = 0; i < transformedVertices.Length; i++)
-        {
-            transformedVertices[i] = M * new Vector4(modelSpaceVertices[i].x, modelSpaceVertices[i].y, modelSpaceVertices[i].z, 1);
-        }
-
-        mesh.vertices = transformedVertices;
-
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-    }
 }
