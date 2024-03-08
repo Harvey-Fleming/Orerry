@@ -76,4 +76,9 @@ public class CustomQuaternion
         CustomQuaternion newP =  newK * rot;
         transform.Position = new Vector3(newP.x, newP.y, newP.z);
     }
+
+    public Quaternion ConvertToUnityQuaternion()
+    {
+        return new Quaternion(x,y,z,w);
+    }
 }

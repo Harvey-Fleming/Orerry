@@ -22,7 +22,7 @@ public class LookAtCamera : MonoBehaviour
         LookAtTarget();
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction, Color.green, 0.1f);
+        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green, 0.1f);
         if (Input.GetMouseButtonDown(0))
         {
             isZoomed = !isZoomed;
@@ -32,8 +32,6 @@ public class LookAtCamera : MonoBehaviour
 
             foreach(BoxCollider collider in colliders)
             {
-                
-
                 ray.direction *= 1000;
                 Vector3 intersectPoint;
                 
@@ -84,8 +82,10 @@ public class LookAtCamera : MonoBehaviour
         float yawangle = Mathf.Atan2(forwardDirection.x, forwardDirection.z) * 180 / Mathf.PI;
 
         float nextPitch = MathLib.FloatLerp(transform.eulerAngles.x, pitchangle, Time.deltaTime);
-        float nextYaw = MathLib.FloatLerp(transform.eulerAngles.y, yawangle, Time.deltaTime);
 
-        transform.rotation = Quaternion.Euler(nextPitch, nextYaw, 0);
+        //Causes Strange Spin when Lerping
+        //float nextYaw = MathLib.FloatLerp(transform.eulerAngles.y, yawangle, Time.deltaTime);
+
+        transform.rotation = Quaternion.Euler(nextPitch, yawangle, transform.rotation.z);
     }
 }
