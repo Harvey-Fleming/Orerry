@@ -65,12 +65,12 @@ public class CustomTransform : MonoBehaviour
 
         forwardDirection = MathLib.EulerAnglestoDirection(eulerAngle);
         //Debug.Log(forwardDirection);
-        Debug.DrawRay(position, forwardDirection, Color.red, 0.1f);
+        //Debug.DrawRay(position, forwardDirection, Color.red, 0.1f);
         //Calculate right direction
         rightDirection = MathLib.VectorCrossProduct(Vector3.up, forwardDirection);
-        Debug.DrawRay(position, rightDirection, Color.blue, 0.1f);
+        //Debug.DrawRay(position, rightDirection, Color.blue, 0.1f);
         updirection = MathLib.VectorCrossProduct(forwardDirection, rightDirection);
-        Debug.DrawRay(position, updirection, Color.yellow, 0.1f);
+        //Debug.DrawRay(position, updirection, Color.yellow, 0.1f);
 
         //#region Line Intersection
         //Vector3 GlobalStart = position;

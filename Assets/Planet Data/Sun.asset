@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e60d7a4284a4ee47984105179dfe357, type: 3}
+  m_Name: Sun
+  m_EditorClassIdentifier: 
+  planetName: Sun
+  planetDesc: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+    posuere ipsum non lacus laoreet, non ullamcorper massa feugiat. Cras nec mauris
+    quis ante sodales tincidunt vel eu tellus. Ut a sollicitudin lacus. Suspendisse
+    ipsum leo, maximus a egestas non, bibendum a quam. Integer tristique quam a augue
+    bibendum facilisis. Sed semper lacus ac mattis euismod. Duis gravida magna aliquam
+    tortor finibus, sit amet consectetur lorem imperdiet. Vestibulum blandit ut dolor
+    ac fermentum. Ut eu eleifend enim. Ut volutpat varius condimentum. Vivamus eget
+    viverra risus. Morbi tempor rhoncus purus et varius. Donec scelerisque quam odio,
+    vel ultricies odio pulvinar non. Nam pulvinar elementum tincidunt.
+  planetTilt: 7.25
+  planetDist: 0

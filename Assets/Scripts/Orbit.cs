@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomTransform))]
 public class Orbit : MonoBehaviour
 {
+    [Header("Planet Information")]
+    [SerializeField] private Planet planetInformation;
+
     [Header("Orbit Variables")]
     [Tooltip("This is the Game Object that holds the planet this gameobject will orbit around")]
     [SerializeField] private GameObject primaryBody;
@@ -18,6 +19,7 @@ public class Orbit : MonoBehaviour
     private float yawAngle = 0f;
     
     public Vector3 OrbitalRotation { get => orbitalRotation; set => orbitalRotation = value; }
+    public Planet PlanetInformation { get => planetInformation; set => planetInformation = value; }
 
     // Start is called before the first frame update
     void Start()

@@ -1,7 +1,9 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CustomTransform))]
 public class BoxCollider : MonoBehaviour
 {
+    [SerializeField] private Vector3 colliderSize;
     private AABB AABBcollider;
 
     public AABB AABBCollider { get => AABBcollider; set => AABBcollider = value; }
@@ -9,6 +11,11 @@ public class BoxCollider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        AABBcollider = new AABB(new Vector3(0, 0, 0), new Vector3(0.5f, 0.5f, 0.5f));
+        AABBcollider = new AABB(GetComponent<CustomTransform>().Position, new Vector3(colliderSize.x, colliderSize.y, colliderSize.z));
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawCube(GetComponent<CustomTransform>().Position, new Vector3(colliderSize.x, colliderSize.y, colliderSize.z));
     }
 }

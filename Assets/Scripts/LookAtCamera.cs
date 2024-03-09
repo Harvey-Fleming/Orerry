@@ -5,11 +5,11 @@ using UnityEngine;
 public class LookAtCamera : MonoBehaviour
 {
     [SerializeField] GameObject target;
+    [SerializeField] GameObject defaultTarget;
 
     Camera mainCamera;
 
     bool isZoomed = false;
-    bool isZooming = false;
 
     private void Start()
     {
@@ -23,10 +23,9 @@ public class LookAtCamera : MonoBehaviour
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green, 0.1f);
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) & !isZoomed)
         {
-            isZoomed = !isZoomed;
-            isZooming = true;
+            isZoomed = true;
 
             BoxCollider[] colliders = FindObjectsOfType<BoxCollider>();
 
@@ -34,30 +33,38 @@ public class LookAtCamera : MonoBehaviour
             {
                 ray.direction *= 1000;
                 Vector3 intersectPoint;
-                
-                if (AABB.LineIntersection(collider.AABBCollider, ray.origin,ray.direction , out intersectPoint))
+                CustomTransform cTrans = collider.GetComponent<CustomTransform>();
+                if (AABB.LineIntersection(collider.AABBCollider, ray.origin, ray.direction , out intersectPoint))
                 {
-                    
-                    Debug.Log("Intersecting! Local Intersection Point " + intersectPoint);
-                    Debug.Log("Global Intersection Point " + (collider.GetComponent<CustomTransform>().Matrix * intersectPoint));
+                    Debug.DrawRay(ray.origin, (ray.direction * 1000), Color.magenta, 5f);
+                    Debug.Log("Intersecting! Local Intersection Point " +cTrans.Matrix * intersectPoint);
+                    Debug.Log("Global Intersection Point " + ( intersectPoint));
 
                     target = collider.gameObject;
+                    if(target.GetComponent<Orbit>().PlanetInformation != null)
+                    {
+                        PlanetShowcaseUI.instance.ShowCanvas();
+                        PlanetShowcaseUI.instance.SetUIInformation(target);
+                    }
                 }
             }
         }
-
-        if(isZooming)
+        else if(isZoomed && Input.GetMouseButtonDown(1))
         {
-            if(isZoomed)
-            {
-                float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, 60, Time.deltaTime);
-                mainCamera.fieldOfView = nextFOV;
-            }
-            else
-            {
-                float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, 20, Time.deltaTime);
-                mainCamera.fieldOfView = nextFOV;
-            }
+            isZoomed = false;
+            PlanetShowcaseUI.instance.HideCanvas();
+            target = defaultTarget;
+        }
+
+        if(isZoomed)
+        {
+            float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, 20, Time.deltaTime);
+            mainCamera.fieldOfView = nextFOV;
+        }
+        else
+        {
+            float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, 60, Time.deltaTime);
+            mainCamera.fieldOfView = nextFOV;
         }
     }
 
@@ -70,13 +77,13 @@ public class LookAtCamera : MonoBehaviour
         //Calculate forward direction
         Vector3 forwardDirection = dir;
         //Debug.Log(forwardDirection);
-        Debug.DrawRay(transform.position, forwardDirection, Color.red, 0.1f);
+        //Debug.DrawRay(transform.position, forwardDirection, Color.red, 0.1f);
         //Calculate right direction
         Vector3 rightDirection = MathLib.VectorCrossProduct(Vector3.up, forwardDirection);
-        Debug.DrawRay(transform.position, rightDirection, Color.blue, 0.1f);
+        //Debug.DrawRay(transform.position, rightDirection, Color.blue, 0.1f);
 
         Vector3 updirection = MathLib.VectorCrossProduct(forwardDirection, rightDirection);
-        Debug.DrawRay(transform.position, updirection, Color.yellow, 0.1f);
+        //Debug.DrawRay(transform.position, updirection, Color.yellow, 0.1f);
 
         float pitchangle = 180 - Mathf.Atan2(-forwardDirection.y, forwardDirection.z) * 180 / Mathf.PI;
         float yawangle = Mathf.Atan2(forwardDirection.x, forwardDirection.z) * 180 / Mathf.PI;
