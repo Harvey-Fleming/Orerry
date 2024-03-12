@@ -81,4 +81,29 @@ public class CustomQuaternion
     {
         return new Quaternion(x,y,z,w);
     }
+
+    public Vector4 GetAxisAngle()
+    {
+        Vector4 rv = new Vector4();
+
+        float halfangle = Mathf.Acos(w);
+        rv.w = halfangle * 2;
+
+        rv.x = x / Mathf.Sin(halfangle);
+        rv.y = y / Mathf.Sin(halfangle);
+        rv.z = z / Mathf.Sin(halfangle);
+
+
+        return rv;
+    }
+    public static CustomQuaternion Slerp(CustomQuaternion a, CustomQuaternion b,float t)
+    {
+        t = Mathf.Clamp01(t);
+
+        CustomQuaternion d = b * a.Inverse();
+        Vector4 AxisAngle = d.GetAxisAngle();
+        CustomQuaternion dT = new(AxisAngle.w * t, new Vector3(AxisAngle.x, AxisAngle.y, AxisAngle.z));
+
+        return dT * a;
+    }
 }

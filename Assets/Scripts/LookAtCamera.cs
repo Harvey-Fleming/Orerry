@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class LookAtCamera : MonoBehaviour
 {
     [SerializeField] GameObject target;
     [SerializeField] GameObject defaultTarget;
+
+    [SerializeField] GameObject debugCube;
 
     Camera mainCamera;
 
@@ -25,7 +28,7 @@ public class LookAtCamera : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green, 0.1f);
         if (Input.GetMouseButtonDown(0) & !isZoomed)
         {
-            isZoomed = true;
+            
 
             BoxCollider[] colliders = FindObjectsOfType<BoxCollider>();
 
@@ -34,15 +37,15 @@ public class LookAtCamera : MonoBehaviour
                 ray.direction *= 1000;
                 Vector3 intersectPoint;
                 CustomTransform cTrans = collider.GetComponent<CustomTransform>();
+
                 if (AABB.LineIntersection(collider.AABBCollider, ray.origin, ray.direction , out intersectPoint))
                 {
                     Debug.DrawRay(ray.origin, (ray.direction * 1000), Color.magenta, 5f);
-                    Debug.Log("Intersecting! Local Intersection Point " +cTrans.Matrix * intersectPoint);
-                    Debug.Log("Global Intersection Point " + ( intersectPoint));
-
+                    Instantiate(debugCube, intersectPoint, Quaternion.identity);
                     target = collider.gameObject;
                     if(target.GetComponent<Orbit>().PlanetInformation != null)
                     {
+                        isZoomed = true;
                         PlanetShowcaseUI.instance.ShowCanvas();
                         PlanetShowcaseUI.instance.SetUIInformation(target);
                     }
@@ -76,8 +79,8 @@ public class LookAtCamera : MonoBehaviour
 
         //Calculate forward direction
         Vector3 forwardDirection = dir;
-        //Debug.Log(forwardDirection);
         //Debug.DrawRay(transform.position, forwardDirection, Color.red, 0.1f);
+
         //Calculate right direction
         Vector3 rightDirection = MathLib.VectorCrossProduct(Vector3.up, forwardDirection);
         //Debug.DrawRay(transform.position, rightDirection, Color.blue, 0.1f);

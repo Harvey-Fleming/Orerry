@@ -6,12 +6,18 @@ public class BoxCollider : MonoBehaviour
     [SerializeField] private Vector3 colliderSize;
     private AABB AABBcollider;
 
-    public AABB AABBCollider { get => AABBcollider; set => AABBcollider = value; }
+    public AABB AABBCollider { get => AABBcollider;}
+
+    private void Awake()
+    {
+        AABBcollider = new AABB(GetComponent<CustomTransform>().Position - colliderSize, GetComponent<CustomTransform>().Position + colliderSize);
+
+    }
 
     // Update is called once per frame
     void Update()
     {
-        AABBcollider = new AABB(GetComponent<CustomTransform>().Position, new Vector3(colliderSize.x, colliderSize.y, colliderSize.z));
+        AABBcollider = new AABB(GetComponent<CustomTransform>().Position - colliderSize,GetComponent<CustomTransform>().Position + colliderSize);
     }
 
     private void OnDrawGizmosSelected()
