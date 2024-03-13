@@ -25,23 +25,18 @@ public class LookAtCamera : MonoBehaviour
         LookAtTarget();
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green, 0.1f);
+        Debug.DrawLine(ray.origin, ray.direction * 1000, Color.green, 0.1f);
         if (Input.GetMouseButtonDown(0) & !isZoomed)
         {
-            
+            Debug.Log("Ray Direction is " + ray.direction);
 
             BoxCollider[] colliders = FindObjectsOfType<BoxCollider>();
 
             foreach(BoxCollider collider in colliders)
             {
-                ray.direction *= 1000;
-                Vector3 intersectPoint;
-                CustomTransform cTrans = collider.GetComponent<CustomTransform>();
-
-                if (AABB.LineIntersection(collider.AABBCollider, ray.origin, ray.direction , out intersectPoint))
+                if (AABB.LineIntersection(collider.AABBCollider, ray.origin, ray.direction * 1000 , out Vector3 intersectPoint))
                 {
-                    Debug.DrawRay(ray.origin, (ray.direction * 1000), Color.magenta, 5f);
-                    Instantiate(debugCube, intersectPoint, Quaternion.identity);
+                    Debug.DrawLine(ray.origin, (ray.direction * 1000), Color.magenta, 5f);
                     target = collider.gameObject;
                     if(target.GetComponent<Orbit>().PlanetInformation != null)
                     {
