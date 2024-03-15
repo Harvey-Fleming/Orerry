@@ -58,7 +58,7 @@ public class Orbit : MonoBehaviour
         
         if(primaryBody != null)
         {
-            yawAngle += Time.deltaTime * rotationSpeed;
+            yawAngle += Time.deltaTime * rotationSpeed * TimeManager.instance.TimeScale;
 
             CustomQuaternion q = new CustomQuaternion(yawAngle, primaryBody.GetComponent<CustomTransform>().Updirection);
 

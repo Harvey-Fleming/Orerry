@@ -41,6 +41,6 @@ public class PlanetShowcaseUI : MonoBehaviour
         planetNameText.text = planetInfo.PlanetName;
         planetDescText.text = planetInfo.PlanetDesc;
         planetTiltText.text = planetInfo.PlanetName + " is at a " + planetInfo.PlanetTilt + " Degree Tilt";
-        planetDistText.text = planetInfo.PlanetName + " is " + planetInfo.PlanetDist + " miles from the sun";
+        planetDistText.text = planetInfo.PlanetName + " is " + planetInfo.PlanetDist + " from the sun";
     }
 }
