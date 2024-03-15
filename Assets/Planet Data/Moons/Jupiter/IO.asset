@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e60d7a4284a4ee47984105179dfe357, type: 3}
+  m_Name: IO
+  m_EditorClassIdentifier: 
+  planetName: IO
+  planetDesc: "Jupiter's rocky moon Io is the most volcanically active world in the
+    solar system, with hundreds of volcanoes, some erupting lava fountains dozens
+    of miles (or kilometers) high. Io\u2019s remarkable activity is the result of
+    a tug-of-war between Jupiter's powerful gravity and smaller but precisely timed
+    pulls from two neighboring moons that orbit farther from Jupiter \u2013 Europa
+    and Ganymede."
+  planetTilt: 0.04
+  planetDist: 

@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e60d7a4284a4ee47984105179dfe357, type: 3}
-  m_Name: Jupiter
+  m_Name: Phobos
   m_EditorClassIdentifier: 
-  planetName: Jupiter
-  planetDesc: 
-  planetTilt: 
+  planetName: Phobos
+  planetDesc: Phobos is the larger of Mars' two moons. It orbits Mars three times
+    a day, and is so close to the planet's surface that in some locations on Mars
+    it cannot always be seen.
+  planetTilt: 0
   planetDist: 

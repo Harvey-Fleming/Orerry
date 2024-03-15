@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e60d7a4284a4ee47984105179dfe357, type: 3}
   m_Name: Mars
   m_EditorClassIdentifier: 
-  planetName: 
+  planetName: Mars
   planetDesc: 
   planetTilt: 
   planetDist: 

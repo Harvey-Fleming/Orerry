@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e60d7a4284a4ee47984105179dfe357, type: 3}
-  m_Name: Jupiter
+  m_Name: Deimos
   m_EditorClassIdentifier: 
-  planetName: Jupiter
-  planetDesc: 
-  planetTilt: 
-  planetDist: 
+  planetName: Deimos
+  planetDesc: Deimos is the smaller of Mars' two moons. It's 9 by 7 by 6.8 miles
+    in size (15 by 12 by 11 kilometers). Deimos orbits Mars every 30 hours.
+  planetTilt: 2
+  planetDist: 0

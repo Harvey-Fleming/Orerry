@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e60d7a4284a4ee47984105179dfe357, type: 3}
+  m_Name: Europa
+  m_EditorClassIdentifier: 
+  planetName: Europa
+  planetDesc: "Europa is primarily made of silicate rock and has a water-ice crust
+    and probably an iron-nickel core. It has a very thin atmosphere, composed primarily
+    of oxygen. Cracks and streaks striate its surface, but craters are relatively
+    few. Scientists are almost certain that hidden beneath the icy surface of Europa
+    is a saltwater ocean with about twice as much water as Earth\u2019s global ocean."
+  planetTilt: 0.1
+  planetDist: 
