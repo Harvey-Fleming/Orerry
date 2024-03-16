@@ -8,6 +8,12 @@ public class LookAtCamera : MonoBehaviour
     [SerializeField] GameObject target;
     [SerializeField] GameObject defaultTarget;
 
+    [SerializeField] float defaultFOV;
+    [SerializeField] float ZoomedFOV;
+
+
+    [SerializeField] float lerpSpeed = 1f;
+
     Camera mainCamera;
 
     bool isZoomed = false;
@@ -70,12 +76,12 @@ public class LookAtCamera : MonoBehaviour
 
         if(isZoomed)
         {
-            float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, 20, Time.deltaTime);
+            float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, ZoomedFOV, Time.deltaTime);
             mainCamera.fieldOfView = nextFOV;
         }
         else
         {
-            float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, 60, Time.deltaTime);
+            float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, defaultFOV, Time.deltaTime);
             mainCamera.fieldOfView = nextFOV;
         }
     }
@@ -100,7 +106,7 @@ public class LookAtCamera : MonoBehaviour
         float pitchangle = 180 - Mathf.Atan2(-forwardDirection.y, forwardDirection.z) * 180 / Mathf.PI;
         float yawangle = Mathf.Atan2(forwardDirection.x, forwardDirection.z) * 180 / Mathf.PI;
 
-        float nextPitch = MathLib.FloatLerp(transform.eulerAngles.x, pitchangle, Time.deltaTime);
+        float nextPitch = MathLib.FloatLerp(transform.eulerAngles.x, pitchangle, Time.deltaTime * lerpSpeed);
 
         //Causes Strange Spin when Lerping
         //float nextYaw = MathLib.FloatLerp(transform.eulerAngles.y, yawangle, Time.deltaTime);

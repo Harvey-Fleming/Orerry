@@ -13,12 +13,13 @@ public class Orbit : MonoBehaviour
     [SerializeField] private float orbitRadius = 5f;
     [Space]
     [SerializeField] private Vector3 orbitalRotation;
+    [SerializeField] private float tiltAngle = 20f;
 
     CustomTransform cTrans;
     private float t;
 
     private float yawAngle = 0f;
-    private float tiltAngle = 0f;
+    
     [SerializeField] private float rotationSpeed = 1f;
 
     public Vector3 OrbitalRotation { get => orbitalRotation; set => orbitalRotation = value; }
@@ -55,10 +56,13 @@ public class Orbit : MonoBehaviour
         //    }
         //}
         #endregion
+        yawAngle += Time.deltaTime * rotationSpeed * TimeManager.instance.TimeScale;
+        t += Time.deltaTime * rotationSpeed;
+
 
         if (primaryBody != null)
         {
-            yawAngle += Time.deltaTime * rotationSpeed * TimeManager.instance.TimeScale;
+            
 
             CustomQuaternion q = new CustomQuaternion(yawAngle, primaryBody.GetComponent<CustomTransform>().Updirection);
 
@@ -70,9 +74,18 @@ public class Orbit : MonoBehaviour
             //Debug.Log(newP);
 
             cTrans.Position = newP + primaryBody.GetComponent<CustomTransform>().Position;
-            
-            
+              
         }
+
+        
+        CustomQuaternion o = new CustomQuaternion(20, transform.right);
+
+        CustomQuaternion r = new CustomQuaternion(transform.up);
+        //Create Axis for Axial Tilt that we will rotate the planet around
+        CustomQuaternion newG = r * o;
+
+        Debug.DrawLine(Vector3.zero + cTrans.Position, newG.GetAxis() + cTrans.Position, Color.red, 0.2f);
+        
 
     }
 }
