@@ -18,6 +18,7 @@ public class Orbit : MonoBehaviour
     private float t;
 
     private float yawAngle = 0f;
+    private float tiltAngle = 0f;
     [SerializeField] private float rotationSpeed = 1f;
 
     public Vector3 OrbitalRotation { get => orbitalRotation; set => orbitalRotation = value; }
@@ -55,8 +56,7 @@ public class Orbit : MonoBehaviour
         //}
         #endregion
 
-        
-        if(primaryBody != null)
+        if (primaryBody != null)
         {
             yawAngle += Time.deltaTime * rotationSpeed * TimeManager.instance.TimeScale;
 
@@ -71,7 +71,7 @@ public class Orbit : MonoBehaviour
 
             cTrans.Position = newP + primaryBody.GetComponent<CustomTransform>().Position;
             
-            //Slerp to that angle >:)
+            
         }
 
     }

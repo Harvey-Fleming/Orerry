@@ -8,8 +8,6 @@ public class LookAtCamera : MonoBehaviour
     [SerializeField] GameObject target;
     [SerializeField] GameObject defaultTarget;
 
-    [SerializeField] GameObject debugCube;
-
     Camera mainCamera;
 
     bool isZoomed = false;
@@ -31,21 +29,37 @@ public class LookAtCamera : MonoBehaviour
             Debug.Log("Ray Direction is " + ray.direction);
 
             BoxCollider[] colliders = FindObjectsOfType<BoxCollider>();
+            BoxCollider closesthitCollider = null;
+            float closestDist = Mathf.Infinity;
 
-            foreach(BoxCollider collider in colliders)
+            foreach (BoxCollider collider in colliders)
             {
                 if (AABB.LineIntersection(collider.AABBCollider, ray.origin, ray.direction * 1000 , out Vector3 intersectPoint))
                 {
                     Debug.DrawLine(ray.origin, (ray.direction * 1000), Color.magenta, 5f);
-                    target = collider.gameObject;
-                    if(target.GetComponent<Orbit>().PlanetInformation != null)
+                    float Dist = new MyVector3(collider.GetComponent<CustomTransform>().Position - transform.position).GetLength();
+                    Debug.Log(collider.name + " is " + Dist);
+                    if (Dist < closestDist)
                     {
-                        isZoomed = true;
-                        PlanetShowcaseUI.instance.ShowCanvas();
-                        PlanetShowcaseUI.instance.SetUIInformation(target);
+                        closestDist = Dist;
+                        closesthitCollider = collider;
+                        Debug.Log(collider.name + " is now the closest");
+
                     }
                 }
             }
+
+            if(closesthitCollider != null)
+            {
+                target = closesthitCollider.gameObject;
+                if (target.GetComponent<Orbit>().PlanetInformation != null)
+                {
+                    isZoomed = true;
+                    PlanetShowcaseUI.instance.ShowCanvas();
+                    PlanetShowcaseUI.instance.SetUIInformation(target);
+                }
+            }
+
         }
         else if(isZoomed && Input.GetMouseButtonDown(1))
         {
