@@ -8,7 +8,10 @@ public class TimeManager : MonoBehaviour
 
     [SerializeField] private float timeScale;
 
+    [SerializeField] [ReadOnly] private float simulationSecond = 1f;
+
     public float TimeScale { get => timeScale; }
+    public float SimulationSecond { get => simulationSecond;}
 
     // Start is called before the first frame update
     void Start()
@@ -21,5 +24,10 @@ public class TimeManager : MonoBehaviour
         {
             instance = this;
         }
+    }
+
+    private void Update()
+    {
+        simulationSecond = 1 / timeScale;
     }
 }

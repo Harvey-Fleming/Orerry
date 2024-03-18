@@ -12,18 +12,15 @@ public class Orbit : MonoBehaviour
 
     [SerializeField] private float orbitRadius = 5f;
     [Space]
-    [SerializeField] private Vector3 orbitalRotation;
     [SerializeField] private float tiltAngle = 20f;
 
     CustomTransform cTrans;
-    private float t;
 
-    private float yawAngle = 0f;
+    float amountToRotate;
+    float orbitRotationCooldown = 0f;
     
-    [SerializeField] private float rotationSpeed = 1f;
-
-    public Vector3 OrbitalRotation { get => orbitalRotation; set => orbitalRotation = value; }
-    public Planet PlanetInformation { get => planetInformation; set => planetInformation = value; }
+    [SerializeField] private float orbitalPeriod = 1f;
+    public Planet PlanetInformation { get => planetInformation;}
 
     // Start is called before the first frame update
     void Start()
@@ -56,24 +53,31 @@ public class Orbit : MonoBehaviour
         //    }
         //}
         #endregion
-        yawAngle += Time.deltaTime * rotationSpeed * TimeManager.instance.TimeScale;
 
-
-        if (primaryBody != null)
+        if (primaryBody != null && orbitRotationCooldown >= TimeManager.instance.SimulationSecond)
         {
-            
 
-            CustomQuaternion q = new CustomQuaternion(yawAngle, primaryBody.GetComponent<CustomTransform>().Updirection);
+            //Calculate how much we should rotate by based on the time manager sim second
+
+            amountToRotate += 360 / (TimeManager.instance.SimulationSecond * (orbitalPeriod *24 * 60 * 60));
+
+            //Do the quaternion stuff
+
+            CustomQuaternion q = new CustomQuaternion(amountToRotate, primaryBody.GetComponent<CustomTransform>().Updirection);
 
             CustomQuaternion k = new CustomQuaternion(new Vector3(orbitRadius, 0, 0));
 
             CustomQuaternion newK = q * k * q.Inverse();
 
             Vector3 newP = newK.GetAxis();
-            //Debug.Log(newP);
 
             cTrans.Position = newP + primaryBody.GetComponent<CustomTransform>().Position;
-                
+
+            orbitRotationCooldown = 0f;
+        }
+        else if(primaryBody != null && orbitRotationCooldown < TimeManager.instance.SimulationSecond)
+        {
+            orbitRotationCooldown += 1 * Time.deltaTime;
         }
 
     }

@@ -32,7 +32,7 @@ public class LookAtCamera : MonoBehaviour
         Debug.DrawLine(ray.origin, ray.direction * 1000, Color.green, 0.1f);
         if (Input.GetMouseButtonDown(0) & !isZoomed)
         {
-            Debug.Log("Ray Direction is " + ray.direction);
+            //Debug.Log("Ray Direction is " + ray.direction);
 
             BoxCollider[] colliders = FindObjectsOfType<BoxCollider>();
             BoxCollider closesthitCollider = null;
