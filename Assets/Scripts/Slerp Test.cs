@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SlerpTest : MonoBehaviour
@@ -8,13 +6,12 @@ public class SlerpTest : MonoBehaviour
 
     CustomTransform cTrans;
 
-    CustomQuaternion tiltQuaternion;
+    Matrix4by4 tiltRotMatrix;
+
     // Start is called before the first frame update
     void Start()
     {
         cTrans = GetComponent<CustomTransform>();
-
-
     }
 
     // Update is called once per frame
@@ -22,12 +19,13 @@ public class SlerpTest : MonoBehaviour
     {
         t += Time.deltaTime * 2f;
 
-        CustomQuaternion tilt = new CustomQuaternion(20, transform.right);
+        //CustomQuaternion tilt = new CustomQuaternion(t, MathLib.RadiansToVector((20) * Mathf.PI / 180));
+        CustomQuaternion tilt = new CustomQuaternion(t, MathLib.EulerAnglestoDirection(new Vector3((20) * Mathf.PI / 180, 0, 0)));
 
-        tiltQuaternion = (tilt * new CustomQuaternion(transform.up) * tilt.Inverse());
+        Debug.Log(MathLib.EulerAnglestoDirection(new Vector3((20) * Mathf.PI / 180, 0, 0)));
 
-        cTrans.Rotation = (tiltQuaternion).GetAxis();
+        cTrans.Rotation = tilt.ToEulerAngles();
 
-        Debug.DrawLine(Vector3.zero, cTrans.Position + tiltQuaternion.GetAxis(), Color.black, 0.1f);
+        Debug.DrawLine(Vector3.zero, MathLib.EulerAnglestoDirection(new Vector3((20) * Mathf.PI / 180, 0, 0)), Color.black, 0.1f);
     }
 }

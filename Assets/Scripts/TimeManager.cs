@@ -30,4 +30,9 @@ public class TimeManager : MonoBehaviour
     {
         simulationSecond = 1 / timeScale;
     }
+
+    public void SetTimeScale(int timeScale)
+    {
+        this.timeScale = timeScale;
+    }
 }

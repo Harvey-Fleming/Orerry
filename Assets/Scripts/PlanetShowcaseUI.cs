@@ -6,6 +6,7 @@ using TMPro;
 public class PlanetShowcaseUI : MonoBehaviour
 {
     public static PlanetShowcaseUI instance;
+    [SerializeField] private GameObject planetUIParent;
 
     [SerializeField] private TMP_Text planetNameText;
     [SerializeField] private TMP_Text planetDescText;
@@ -26,12 +27,12 @@ public class PlanetShowcaseUI : MonoBehaviour
 
     public void ShowCanvas()
     {
-        GetComponent<Canvas>().enabled = true;
+        planetUIParent.SetActive(true);
     }    
     
     public void HideCanvas()
     {
-        GetComponent<Canvas>().enabled = false;
+        planetUIParent.SetActive(false);
     }
 
     public void SetUIInformation(GameObject planet)

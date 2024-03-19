@@ -106,4 +106,44 @@ public class CustomQuaternion
 
         return dT * a;
     }
+
+    //public static Vector3 ConvertToEuler()
+    //{
+    //    Vector3 rv = new Vector3();
+
+    //    return rv;
+    //}
+
+    public Vector3 ToEulerAngles()
+    {
+        Vector3 angles;
+
+        // roll (x-axis rotation)
+        float sinr_cosp = 2 * (w * x + y * z);
+        float cosr_cosp = 1 - 2 * (x * x + y * y);
+        angles.x = Mathf.Atan2(sinr_cosp, cosr_cosp);
+
+        // pitch (y-axis rotation)
+        float sinp = Mathf.Sqrt(1 + 2 * (w * y - x * z));
+        float cosp = Mathf.Sqrt(1 - 2 * (w * y - x * z));
+        angles.z = 2 * Mathf.Atan2(sinp, cosp) - MathF.PI / 2;
+
+        // yaw (z-axis rotation)
+        float siny_cosp = 2 * (w * z + x * y);
+        float cosy_cosp = 1 - 2 * (y * y + z * z);
+        angles.y = Mathf.Atan2(siny_cosp, cosy_cosp);
+
+        return angles;
+    }
+
+    public Matrix4by4 ConvertToMatrix()
+    {
+        Matrix4by4 rv = new Matrix4by4(
+            new Vector4(2 * (w * w + x * x) - 1, 2 * (x * y - w * z), 2 * (x * z + w * y)),
+            new Vector4(2 * (x * x + w * z), 2 * (w * w - y * y), 2 * (y * z - w * x)),
+            new Vector4(2 * (x * z + w * y), 2 * (y * z - w * x), 2 * (w * w - z * z) - 1),
+            new Vector4(0, 0, 0, 1)
+            );
+        return rv;
+    }
 }
