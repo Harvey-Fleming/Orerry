@@ -22,6 +22,8 @@ public class CustomTransform : MonoBehaviour
     Matrix4by4 M = Matrix4by4.Identity;
     Matrix4by4 inverseM = Matrix4by4.Identity;
 
+    Matrix4by4 additionalMatrix = Matrix4by4.Identity;
+
     Vector3 updirection;
     Vector3 rightDirection;
     Vector3 forwardDirection;
@@ -34,6 +36,7 @@ public class CustomTransform : MonoBehaviour
     public Vector3 Updirection { get => updirection; set => updirection = value; }
     public Vector3 RightDirection { get => rightDirection; set => rightDirection = value; }
     public Vector3 ForwardDirection { get => forwardDirection; set => forwardDirection = value; }
+    public Matrix4by4 AdditionalMatrix { get => additionalMatrix; set => additionalMatrix = value; }
 
 
     // Start is called before the first frame update
@@ -66,24 +69,16 @@ public class CustomTransform : MonoBehaviour
         forwardDirection = MathLib.EulerAnglestoDirection(eulerAngle);
         //Debug.Log(forwardDirection);
         //Debug.DrawRay(position, forwardDirection, Color.red, 0.1f);
+
         //Calculate right direction
         rightDirection = MathLib.VectorCrossProduct(Vector3.up, forwardDirection);
         //Debug.DrawRay(position, rightDirection, Color.blue, 0.1f);
+
         updirection = MathLib.VectorCrossProduct(forwardDirection, rightDirection);
         //Debug.DrawRay(position, updirection, Color.yellow, 0.1f);
 
-        //#region Line Intersection
-        //Vector3 GlobalStart = position;
-        //Vector3 GlobalEnd = Vector3.zero;
         inverseM = scaleMatrix.ScaleInverse() * (R.RotationInverse() * translationMatrix.TranslationInverse());
 
-        //Vector3 LocalStart = InverseM * GlobalStart;
-        //Vector3 LocalEnd = InverseM * GlobalEnd;
-
-        //Debug.DrawRay(LocalStart, LocalEnd, Color.red, 0.1f);
-
-
-        //#endregion
     }
 
     private void TranslateRotateScale(out Matrix4by4 R, out Matrix4by4 scaleMatrix, out Matrix4by4 translationMatrix)
@@ -108,7 +103,7 @@ public class CustomTransform : MonoBehaviour
             new Vector3(Mathf.Sin(Rotation.y), 0, Mathf.Cos(Rotation.y)),
             Vector3.zero);
 
-        R = (yawMatrix * (pitchMatrix * rollMatrix));
+        R = additionalMatrix * (yawMatrix * (pitchMatrix * rollMatrix)) ;
         scaleMatrix = new Matrix4by4(new Vector3(1, 0, 0) * Scale.x, new Vector3(0, 1, 0) * Scale.y, new Vector3(0, 0, 1) * Scale.z, Vector3.zero);
         translationMatrix = new Matrix4by4(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Position);
         M = translationMatrix * (R * scaleMatrix);
@@ -146,7 +141,7 @@ public class CustomTransform : MonoBehaviour
             new Vector3(Mathf.Sin(Rotation.y), 0, Mathf.Cos(Rotation.y)),
             Vector3.zero);
 
-        R = (yawMatrix * (pitchMatrix * rollMatrix));
+        R = ((yawMatrix) * (pitchMatrix * rollMatrix));
         scaleMatrix = new Matrix4by4(new Vector3(1, 0, 0) * Scale.x, new Vector3(0, 1, 0) * Scale.y, new Vector3(0, 0, 1) * Scale.z, Vector3.zero);
         translationMatrix = new Matrix4by4(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Position);
         M = translationMatrix * (R * scaleMatrix);

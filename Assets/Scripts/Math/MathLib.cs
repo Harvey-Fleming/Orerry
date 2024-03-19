@@ -20,7 +20,7 @@ public class MathLib : MonoBehaviour
     
     public static Vector3 EulerAnglestoDirection(Vector3 EulerAngles)
     {
-        return new Vector3(Mathf.Cos(EulerAngles.x) * Mathf.Sin(EulerAngles.y), Mathf.Sin(EulerAngles.x), Mathf.Cos(EulerAngles.x) * Mathf.Cos(EulerAngles.y));
+        return new Vector3(Mathf.Cos(EulerAngles.x) * Mathf.Cos(EulerAngles.y), Mathf.Sin(EulerAngles.x), Mathf.Cos(EulerAngles.x) * Mathf.Sin(EulerAngles.y));
     }    
     
     public static Vector3 VectorCrossProduct(Vector3 vec1, Vector3 vec2)
