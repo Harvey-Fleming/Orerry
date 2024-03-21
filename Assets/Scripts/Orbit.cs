@@ -22,6 +22,8 @@ public class Orbit : MonoBehaviour
     
     [SerializeField] private float orbitalPeriod = 1f;
     public Planet PlanetInformation { get => planetInformation;}
+    public float OrbitRadius { get => orbitRadius;}
+    public GameObject PrimaryBody { get => primaryBody;}
 
     // Start is called before the first frame update
     void Start()

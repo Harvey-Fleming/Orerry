@@ -1,8 +1,5 @@
 using System;
-using UnityEditor.UIElements;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [Serializable]
 public class MyVector3
@@ -156,54 +153,3 @@ public class MyVector3
     }
 
 }
-
-#if UNITY_EDITOR
-
-[CustomPropertyDrawer(typeof(MyVector3))]
-public class VectorInspectorPropertyDrawer : PropertyDrawer
-{
-
-    public override VisualElement CreatePropertyGUI(SerializedProperty property)
-    {
-        // Create property container element.
-        var container = new VisualElement();
-        
-        // Create property fields.
-        var x = new PropertyField(property.FindPropertyRelative("x"));
-        var y = new PropertyField(property.FindPropertyRelative("y"));
-        var z = new PropertyField(property.FindPropertyRelative("z"));
-
-        // Add fields to the container.
-        container.Add(x);
-        container.Add(y);
-        container.Add(z);
-
-        return container;
-    }
-
-}
-
-[CustomEditor(typeof(VectorInspector))]
-public class VectorInspectorEditor : Editor
-{
-    VectorInspector myTarget;
-
-    public void OnEnable()
-    {
-        myTarget = (VectorInspector)target;
-    }
-
-    public override void OnInspectorGUI()
-    {
-        EditorGUIUtility.labelWidth = 10f;
-        EditorGUILayout.BeginHorizontal();
-        myTarget.Position.x = EditorGUILayout.FloatField("X", myTarget.Position.x);
-        myTarget.Position.y = EditorGUILayout.FloatField("Y", myTarget.Position.y);
-        myTarget.Position.z = EditorGUILayout.FloatField("Z", myTarget.Position.z);
-        EditorGUILayout.EndHorizontal();
-    }
-
-}
-
-
-#endif

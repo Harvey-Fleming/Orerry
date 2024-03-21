@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class ReadOnlyAttribute : PropertyAttribute
 {
 
 }
-
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
 public class ReadOnlyDrawer : PropertyDrawer
 {
@@ -33,3 +34,5 @@ public class Test
     [ReadOnly] public Material c;
     [ReadOnly] public List<int> d = new List<int>();
 }
+
+#endif
