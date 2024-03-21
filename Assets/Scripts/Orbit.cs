@@ -15,6 +15,7 @@ public class Orbit : MonoBehaviour
     [SerializeField] private float tiltAngle = 20f;
 
     CustomTransform cTrans;
+    float t = 0f;
 
     float amountToRotate;
     float orbitRotationCooldown = 0f;
@@ -53,6 +54,15 @@ public class Orbit : MonoBehaviour
         //    }
         //}
         #endregion
+
+        t += Time.deltaTime * 2f;
+
+        CustomQuaternion tilt = new CustomQuaternion(t, MathLib.RadiansToVector((tiltAngle + 90) * Mathf.PI / 180));
+
+        Debug.Log(MathLib.RadiansToVector((tiltAngle + 90) * Mathf.PI / 180));
+
+        cTrans.AdditionalMatrix = tilt.ConvertToMatrix();
+        Debug.Log("Rotations should be " + tilt.ToEulerAngles());
 
         if (primaryBody != null && orbitRotationCooldown >= TimeManager.instance.SimulationSecond)
         {
