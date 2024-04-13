@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CustomTransform))]
-public class Orbit : MonoBehaviour
+public class EulerOrbit : MonoBehaviour
 {
     [Header("Planet Information")]
     [SerializeField] private Planet planetInformation;
@@ -13,16 +13,12 @@ public class Orbit : MonoBehaviour
     [SerializeField] private float orbitRadius = 5f;
     [Space]
     [SerializeField] private float tiltAngle = 20f;
-    [SerializeField] private Vector3 nextPos;
-    [SerializeField] private Vector3 startSlerpPos;    
-    [SerializeField] private CustomQuaternion nextQuat;
-    [SerializeField] private CustomQuaternion startSlerpQuat;
-    [SerializeField] private bool isDebug;
+
     CustomTransform cTrans;
     float t = 0f;
 
     float amountToRotate;
-    float orbitRotationCooldown = 1f;
+    float orbitRotationCooldown = 0f;
     
     [SerializeField] private float orbitalPeriod = 1f;
     public Planet PlanetInformation { get => planetInformation;}
@@ -33,6 +29,8 @@ public class Orbit : MonoBehaviour
     void Start()
     {
         cTrans = GetComponent<CustomTransform>();
+
+        cTrans.Position = new Vector3(orbitRadius,0,0);
     }
 
     // Update is called once per frame
@@ -68,42 +66,20 @@ public class Orbit : MonoBehaviour
 
         if (primaryBody != null && orbitRotationCooldown >= 1)
         {
-            //Reset Timer
-            orbitRotationCooldown = 0f;
 
             //Calculate how much we should rotate by based on the time manager sim second
-            amountToRotate += 360 / (TimeManager.instance.SimulationSecond * (orbitalPeriod *24 * 60 * 60));
 
-            //Do the quaternion stuff
+            amountToRotate = 360 / (TimeManager.instance.SimulationSecond * (orbitalPeriod *24 * 60 * 60));
 
-            CustomQuaternion q = new CustomQuaternion(amountToRotate * Mathf.PI/180, primaryBody.GetComponent<CustomTransform>().Updirection);
+            Vector3 newP = cTrans.Position * Mathf.Cos(amountToRotate) + ((MathLib.VectorCrossProduct(Vector3.up, cTrans.Position) * Mathf.Sin(amountToRotate)) + Vector3.up * (MyVector3.Vector3Dot(Vector3.up, cTrans.Position) * (1-Mathf.Cos(amountToRotate))));
 
-            CustomQuaternion k = new CustomQuaternion(new Vector3(orbitRadius, 0, 0));
+            cTrans.Position = newP + primaryBody.GetComponent<CustomTransform>().Position;
 
-            CustomQuaternion newK = q * k * q.Inverse();
-
-            Vector3 newP = newK.GetAxis();
-
-            //next Pos is the rotated Vector
-            nextPos = newP;
-            //startSlerpPos is the position around the origin that we are starting the slerp at
-            startSlerpPos = cTrans.Position - primaryBody.GetComponent<CustomTransform>().Position;
-
-            startSlerpQuat = new CustomQuaternion(0, cTrans.Position);
-            if (isDebug) Debug.Log(startSlerpQuat.GetAxis());
-            nextQuat = newK;
-
-            if (isDebug) Debug.DrawRay(cTrans.Position, Vector3.up * 5, Color.magenta, Mathf.Infinity);
-
+            orbitRotationCooldown = 0f;
         }
         else if(primaryBody != null && orbitRotationCooldown < 1)
         {
             orbitRotationCooldown += 1 * Time.deltaTime;
-
-            //cTrans.Position = MathLib.Slerp(startSlerpPos , nextPos, orbitRotationCooldown) + primaryBody.GetComponent<CustomTransform>().Position;    
-            //cTrans.Position = CustomQuaternion.Slerp(startSlerpQuat , nextQuat, orbitRotationCooldown).GetAxis() + primaryBody.GetComponent<CustomTransform>().Position;
-            cTrans.Position = CustomQuaternion.Slerp(startSlerpQuat , nextQuat, orbitRotationCooldown).GetAxis() + primaryBody.GetComponent<CustomTransform>().Position;
-            //if (isDebug) Debug.Log(CustomQuaternion.Slerp(startSlerpQuat, nextQuat, orbitRotationCooldown).GetAxis());
         }
 
     }

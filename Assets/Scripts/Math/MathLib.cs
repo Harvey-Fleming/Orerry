@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,5 +44,16 @@ public class MathLib : MonoBehaviour
         return current * (1.0f - t) + target * t;
     }
 
+    public static Vector3 Slerp(Vector3 start, Vector3 end, float percent)
+    {
+        // Dot product - the cosine of the angle between 2 vectors.
+        // cos theta = p0 ⋅ p1
+        float dot = Vector3.Dot(start, end);
+        //theta = Acos dot
+        float theta = Mathf.Acos(dot);
+
+        
+        return (Mathf.Sin((1 - percent) * theta) / Mathf.Sin(theta)) * start + (Mathf.Sin(percent * theta) / Mathf.Sin(theta)) * end;
+    }
 
 }
