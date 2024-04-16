@@ -8,6 +8,8 @@ public class SlerpTest : MonoBehaviour
 
     [SerializeField] float tiltAngle;
 
+    CustomQuaternion nextQuat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,19 +19,14 @@ public class SlerpTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        t += Time.deltaTime * 2f;
+        t += Time.deltaTime * TimeManager.instance.TimeScale;
 
-        CustomQuaternion tilt = new CustomQuaternion(t, MathLib.RadiansToVector((tiltAngle + 90) * Mathf.PI / 180));
+        nextQuat = new CustomQuaternion(t * Mathf.PI / 180, Vector3.up);
 
-        Debug.Log(MathLib.RadiansToVector((tiltAngle + 90) * Mathf.PI / 180));
+        CustomQuaternion pos = new(new Vector3(5,0,0));
 
-        cTrans.AdditionalMatrix = tilt.ConvertToMatrix();
-        Debug.Log("Rotations should be " + tilt.ToEulerAngles());
+        cTrans.Position = (nextQuat * pos * nextQuat.Inverse()).GetAxis();
 
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawLine(cTrans.Position , cTrans.Position + new Vector3(MathLib.RadiansToVector((tiltAngle + 90) * Mathf.PI / 180).x, MathLib.RadiansToVector((tiltAngle + 90) * Mathf.PI / 180).y, 0));
-    }
 }

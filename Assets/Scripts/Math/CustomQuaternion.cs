@@ -37,6 +37,17 @@ public class CustomQuaternion
         return rv;
     }
 
+    public static CustomQuaternion operator /(CustomQuaternion lhs, float rhs)
+    {
+        Vector3 axis = new Vector3(lhs.x / rhs, lhs.y / rhs, lhs.z /rhs);
+
+        float newW = lhs.w / rhs;
+
+        CustomQuaternion rv = new CustomQuaternion(newW, axis);
+
+        return rv;
+    }
+
     public CustomQuaternion Inverse()
     {
         CustomQuaternion rv = new CustomQuaternion();
@@ -50,6 +61,11 @@ public class CustomQuaternion
 
     }
 
+    public float Magnitude()
+    {
+        return Mathf.Sqrt((w * w) + (x*x) + (y*y) + (z*z));
+    }
+
     private void SetAxis(Vector3 v)
     {
         x = v.x;
@@ -59,20 +75,7 @@ public class CustomQuaternion
 
     public Vector3 GetAxis()
     {
-        return new Vector3(x,y,z);
-    }
-
-    public static void RotateAround(CustomTransform transform, Vector3 pivotPoint, Vector3 axis, float angle)
-    {
-        CustomQuaternion rot = new CustomQuaternion(angle, axis);
-
-        CustomQuaternion p = new CustomQuaternion(transform.Position);
-        CustomQuaternion q = new CustomQuaternion(pivotPoint);
-
-
-        CustomQuaternion newK = q * p * q.Inverse();
-        CustomQuaternion newP =  newK * rot;
-        transform.Position = new Vector3(newP.x, newP.y, newP.z);
+        return new Vector3(x, y, z);
     }
 
     public Quaternion ConvertToUnityQuaternion()
@@ -86,6 +89,17 @@ public class CustomQuaternion
 
         float halfangle = Mathf.Acos(w);
         rv.w = halfangle * 2;
+
+        float sinValue = Mathf.Sin(halfangle);
+
+        if(sinValue == 0)
+        {
+            rv.x = 0;
+            rv.y = 0;
+            rv.z = 0;
+
+            return rv;
+        }
 
         rv.x = x / Mathf.Sin(halfangle);
         rv.y = y / Mathf.Sin(halfangle);
@@ -103,28 +117,6 @@ public class CustomQuaternion
         CustomQuaternion dT = new(AxisAngle.w * t, new Vector3(AxisAngle.x, AxisAngle.y, AxisAngle.z));
 
         return dT * a;
-    }
-
-    public Vector3 ToEulerAngles()
-    {
-        Vector3 angles;
-
-        // roll (x-axis rotation)
-        float sinr_cosp = 2 * (w * x + y * z);
-        float cosr_cosp = 1 - 2 * (x * x + y * y);
-        angles.x = Mathf.Atan2(sinr_cosp, cosr_cosp);
-
-        // pitch (y-axis rotation)
-        float sinp = Mathf.Sqrt(1 + 2 * (w * y - x * z));
-        float cosp = Mathf.Sqrt(1 - 2 * (w * y - x * z));
-        angles.z = 2 * Mathf.Atan2(sinp, cosp) - MathF.PI / 2;
-
-        // yaw (z-axis rotation)
-        float siny_cosp = 2 * (w * z + x * y);
-        float cosy_cosp = 1 - 2 * (y * y + z * z);
-        angles.y = Mathf.Atan2(siny_cosp, cosy_cosp);
-
-        return angles;
     }
 
     public Matrix4by4 ConvertToMatrix()

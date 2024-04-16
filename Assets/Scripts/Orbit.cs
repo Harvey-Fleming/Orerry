@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomTransform))]
@@ -13,16 +14,16 @@ public class Orbit : MonoBehaviour
     [SerializeField] private float orbitRadius = 5f;
     [Space]
     [SerializeField] private float tiltAngle = 20f;
-    [SerializeField] private Vector3 nextPos;
-    [SerializeField] private Vector3 startSlerpPos;    
-    [SerializeField] private CustomQuaternion nextQuat;
-    [SerializeField] private CustomQuaternion startSlerpQuat;
+    
+    private CustomQuaternion nextQuat;
+    private CustomQuaternion startSlerpQuat;
     [SerializeField] private bool isDebug;
     CustomTransform cTrans;
     float t = 0f;
 
-    float amountToRotate;
-    float orbitRotationCooldown = 1f;
+    float amountToRotate = 0f;
+    float prevamountToRotate = 0f;
+    float orbitRotationCooldown = 1.0f;
     
     [SerializeField] private float orbitalPeriod = 1f;
     public Planet PlanetInformation { get => planetInformation;}
@@ -71,39 +72,39 @@ public class Orbit : MonoBehaviour
             //Reset Timer
             orbitRotationCooldown = 0f;
 
+            prevamountToRotate = amountToRotate;
             //Calculate how much we should rotate by based on the time manager sim second
             amountToRotate += 360 / (TimeManager.instance.SimulationSecond * (orbitalPeriod *24 * 60 * 60));
 
             //Do the quaternion stuff
+            //This is the quaternion holding the desired rotation
+            nextQuat = new CustomQuaternion(amountToRotate * Mathf.PI/180, Vector3.up);
 
-            CustomQuaternion q = new CustomQuaternion(amountToRotate * Mathf.PI/180, primaryBody.GetComponent<CustomTransform>().Updirection);
-
-            CustomQuaternion k = new CustomQuaternion(new Vector3(orbitRadius, 0, 0));
-
-            CustomQuaternion newK = q * k * q.Inverse();
-
-            Vector3 newP = newK.GetAxis();
-
-            //next Pos is the rotated Vector
-            nextPos = newP;
-            //startSlerpPos is the position around the origin that we are starting the slerp at
-            startSlerpPos = cTrans.Position - primaryBody.GetComponent<CustomTransform>().Position;
-
-            startSlerpQuat = new CustomQuaternion(0, cTrans.Position);
-            if (isDebug) Debug.Log(startSlerpQuat.GetAxis());
-            nextQuat = newK;
+            //This holds the quaternion with the original rotation.
+            startSlerpQuat = new CustomQuaternion(prevamountToRotate * Mathf.PI/180, Vector3.up);
 
             if (isDebug) Debug.DrawRay(cTrans.Position, Vector3.up * 5, Color.magenta, Mathf.Infinity);
 
         }
         else if(primaryBody != null && orbitRotationCooldown < 1)
         {
+            //This is increasing the timer
             orbitRotationCooldown += 1 * Time.deltaTime;
 
-            //cTrans.Position = MathLib.Slerp(startSlerpPos , nextPos, orbitRotationCooldown) + primaryBody.GetComponent<CustomTransform>().Position;    
-            //cTrans.Position = CustomQuaternion.Slerp(startSlerpQuat , nextQuat, orbitRotationCooldown).GetAxis() + primaryBody.GetComponent<CustomTransform>().Position;
-            cTrans.Position = CustomQuaternion.Slerp(startSlerpQuat , nextQuat, orbitRotationCooldown).GetAxis() + primaryBody.GetComponent<CustomTransform>().Position;
-            //if (isDebug) Debug.Log(CustomQuaternion.Slerp(startSlerpQuat, nextQuat, orbitRotationCooldown).GetAxis());
+            //This is the position to be rotated
+            CustomQuaternion k = new CustomQuaternion(new Vector3(orbitRadius, 0, 0));
+
+            //This is the slerped value from the start orientation to the target orientation
+            CustomQuaternion slerpValue = CustomQuaternion.Slerp(startSlerpQuat, nextQuat, orbitRotationCooldown);
+
+            //This rotates the position to where it needs to be.
+            Vector3 newPos = (slerpValue * k * slerpValue.Inverse()).GetAxis();
+            if (isDebug) Debug.Log("The new Pos for " + name +  " should be: " + newPos);
+
+            //This sets the position to where it needs to be in the orbit and offsets it by it's parent planet's position.
+            cTrans.Position = newPos + primaryBody.GetComponent<CustomTransform>().Position;
+            //cTrans.Position = (nextQuat * k * nextQuat.Inverse()).GetAxis() + primaryBody.GetComponent<CustomTransform>().Position;
+            if (isDebug) Debug.Log(cTrans.Position);
         }
 
     }
