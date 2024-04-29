@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Venus
   m_EditorClassIdentifier: 
   planetName: Venus
-  planetDesc: 
-  planetTilt: 
-  planetDist: 
+  planetDesc: Shrouded in thick clouds of sulfuric acid, Venus is a hellish world
+    of intense heat and pressure.
+  planetTilt: 177.4
+  planetDist: 0.723 AU

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Saturn
   m_EditorClassIdentifier: 
   planetName: Saturn
-  planetDesc: 
-  planetTilt: 
-  planetDist: 
+  planetDesc: Adorned with majestic rings made of ice and rock, Saturn is a gas giant
+    with numerous moons.
+  planetTilt: 26.7
+  planetDist: 9.6 AU

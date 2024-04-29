@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Neptune
   m_EditorClassIdentifier: 
   planetName: Neptune
-  planetDesc: 
-  planetTilt: 
-  planetDist: 
+  planetDesc: A distant blue giant, Neptune's stormy atmosphere conceals a turbulent
+    world of winds and icy moons.
+  planetTilt: 28.3
+  planetDist: 30 AU

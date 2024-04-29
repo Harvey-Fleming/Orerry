@@ -68,10 +68,9 @@ public class EulerOrbit : MonoBehaviour
         {
 
             //Calculate how much we should rotate by based on the time manager sim second
-
             amountToRotate = 360 / (TimeManager.instance.SimulationSecond * (orbitalPeriod *24 * 60 * 60));
 
-            Vector3 newP = cTrans.Position * Mathf.Cos(amountToRotate) + ((MathLib.VectorCrossProduct(Vector3.up, cTrans.Position) * Mathf.Sin(amountToRotate)) + Vector3.up * (MyVector3.Vector3Dot(Vector3.up, cTrans.Position) * (1-Mathf.Cos(amountToRotate))));
+            Vector3 newP = MyVector3.RotateVector(cTrans.Position, amountToRotate, Vector3.up);
 
             cTrans.Position = newP + primaryBody.GetComponent<CustomTransform>().Position;
 

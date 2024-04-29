@@ -30,7 +30,7 @@ public class LookAtCamera : MonoBehaviour
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         Debug.DrawLine(ray.origin, ray.direction * 1000, Color.green, 0.1f);
-        if (Input.GetMouseButtonDown(0) & !isZoomed)
+        if (Input.GetMouseButtonDown(0))
         {
             //Debug.Log("Ray Direction is " + ray.direction);
 
@@ -40,11 +40,13 @@ public class LookAtCamera : MonoBehaviour
 
             foreach (BoxCollider collider in colliders)
             {
+                //Check if the ray from the camera collides with this Box Collider
                 if (AABB.LineIntersection(collider.AABBCollider, ray.origin, ray.direction * 1000 , out Vector3 intersectPoint))
                 {
                     Debug.DrawLine(ray.origin, (ray.direction * 1000), Color.magenta, 5f);
                     float Dist = new MyVector3(collider.GetComponent<CustomTransform>().Position - transform.position).GetLength();
                     Debug.Log(collider.name + " is " + Dist);
+                    //Check if the collider is the closest one, If so assign it to the closest collider variable
                     if (Dist < closestDist)
                     {
                         closestDist = Dist;
@@ -55,6 +57,7 @@ public class LookAtCamera : MonoBehaviour
                 }
             }
 
+            //If there is a closest collider, select that one
             if(closesthitCollider != null)
             {
                 target = closesthitCollider.gameObject;
@@ -69,11 +72,13 @@ public class LookAtCamera : MonoBehaviour
         }
         else if(isZoomed && Input.GetMouseButtonDown(1))
         {
+            //Unselects Planet and being to return the FOV back to normal
             isZoomed = false;
             PlanetShowcaseUI.instance.HideCanvas();
             target = defaultTarget;
         }
 
+        //Lerping Camera FOV
         if(isZoomed)
         {
             float nextFOV = MathLib.FloatLerp(mainCamera.fieldOfView, ZoomedFOV, Time.deltaTime);
@@ -90,13 +95,10 @@ public class LookAtCamera : MonoBehaviour
     {
         CustomTransform targetTransform = target.GetComponent<CustomTransform>();
 
-        Vector3 dir = MyVector3.SubtractVectors(new MyVector3(targetTransform.Position), new MyVector3(transform.position)).ConvertToUnityVector();
-
-        //Calculate forward direction
-        Vector3 forwardDirection = dir;
+        //Calculate directions based on camera orientation
+        Vector3 forwardDirection = MyVector3.SubtractVectors(new MyVector3(targetTransform.Position), new MyVector3(transform.position)).ConvertToUnityVector();
         //Debug.DrawRay(transform.position, forwardDirection, Color.red, 0.1f);
 
-        //Calculate right direction
         Vector3 rightDirection = MathLib.VectorCrossProduct(Vector3.up, forwardDirection);
         //Debug.DrawRay(transform.position, rightDirection, Color.blue, 0.1f);
 
@@ -111,6 +113,7 @@ public class LookAtCamera : MonoBehaviour
         //Causes Strange Spin when Lerping
         //float nextYaw = MathLib.FloatLerp(transform.eulerAngles.y, yawangle, Time.deltaTime);
 
+        //Using Quaternion.Euler as Unity's Transform uses quaternion under the hood so the euler angles must be converted into a quaternion.
         transform.rotation = Quaternion.Euler(nextPitch, yawangle, transform.rotation.z);
     }
 }

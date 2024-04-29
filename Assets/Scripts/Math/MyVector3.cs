@@ -133,23 +133,9 @@ public class MyVector3
         return new Vector3(x, y, z);
     }
 
-    // Vector3.MoveTowards
-    public static Vector3 MoveTowards(MyVector3 current, MyVector3 target, float maxDistanceDelta)
+    public static Vector3 RotateVector(Vector3 vector, float angle, Vector3 axis)
     {
-        MyVector3 a = SubtractVectors(target, current);
-        float magnitude = a.GetLength();
-        if (magnitude <= maxDistanceDelta || magnitude == 0f)
-        {
-            return target.ConvertToUnityVector();
-        }
-        return current.ConvertToUnityVector() + a.ConvertToUnityVector() / magnitude * maxDistanceDelta;
-    }
-
-    public static Vector3 RotateVertexAroundAxis(float Angle, Vector3 Axis, Vector3 Vertex)
-    {
-        Vector3 rv = (Vertex * Mathf.Cos(Angle)) + MyVector3.Vector3Dot(Vertex, Axis) * Axis * (1 - Mathf.Cos(Angle)) + MathLib.VectorCrossProduct(Axis, Vertex) * Mathf.Sin(Angle);
-
-        return rv;
+       return vector * Mathf.Cos(angle) + ((MathLib.VectorCrossProduct(axis, vector) * Mathf.Sin(angle)) + axis * (MyVector3.Vector3Dot(axis, vector) * (1 - Mathf.Cos(angle))));
     }
 
 }

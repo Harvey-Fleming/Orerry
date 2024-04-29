@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Uranus
   m_EditorClassIdentifier: 
   planetName: Uranus
-  planetDesc: 
-  planetTilt: 
-  planetDist: 
+  planetDesc: Tilted on its side, Uranus spins like a rolling ball through the icy
+    depths of the outer solar system.
+  planetTilt: 97.8
+  planetDist: 19.2 AU

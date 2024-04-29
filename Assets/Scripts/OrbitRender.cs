@@ -6,9 +6,6 @@ using UnityEngine;
 [ExecuteAlways]
 public class OrbitRender : MonoBehaviour
 {
-    float prevOrbitRadius;
-
-    CustomTransform cTrans;
     LineRenderer lineRenderer;
     Orbit orbit;
 
@@ -19,7 +16,6 @@ public class OrbitRender : MonoBehaviour
     {
         orbit = GetComponent<Orbit>();
         lineRenderer = GetComponent<LineRenderer>();
-        cTrans = GetComponent<CustomTransform>();
 
         lineRenderer.enabled = true;
     }
@@ -31,14 +27,12 @@ public class OrbitRender : MonoBehaviour
 
         lineRenderer.positionCount = subdivisions;
 
-        //Do the quaternion stuff
+        //Calculate points in line
         for (int i = 0; i < subdivisions; i++)
         {
             Vector3 point = new Vector3(Mathf.Cos(angleStep * i) * orbit.OrbitRadius, 0, (Mathf.Sin(angleStep * i) * orbit.OrbitRadius));
 
             lineRenderer.SetPosition(i, point + orbit.PrimaryBody.GetComponent<CustomTransform>().Position);
         }
-
-        prevOrbitRadius = orbit.OrbitRadius;
     }
 }

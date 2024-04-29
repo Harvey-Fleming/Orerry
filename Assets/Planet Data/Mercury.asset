@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mercury
   m_EditorClassIdentifier: 
   planetName: Mercury
-  planetDesc: 
-  planetTilt: 
-  planetDist: 5.85 AU
+  planetDesc: A scorched world closest to the Sun, with extreme temperatures and
+    a barren, cratered surface, devoid of atmosphere.
+  planetTilt: 0.034
+  planetDist: 0.387 AU

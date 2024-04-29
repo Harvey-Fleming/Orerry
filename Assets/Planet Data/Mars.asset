@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mars
   m_EditorClassIdentifier: 
   planetName: Mars
-  planetDesc: 
-  planetTilt: 
-  planetDist: 
+  planetDesc: The red planet, marked by dusty deserts, polar ice caps, and ancient
+    river valleys, hinting at past water.
+  planetTilt: 25.2
+  planetDist: 1.5 AU

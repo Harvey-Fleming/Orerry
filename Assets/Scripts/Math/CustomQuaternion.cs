@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class CustomQuaternion
@@ -37,17 +36,6 @@ public class CustomQuaternion
         return rv;
     }
 
-    public static CustomQuaternion operator /(CustomQuaternion lhs, float rhs)
-    {
-        Vector3 axis = new Vector3(lhs.x / rhs, lhs.y / rhs, lhs.z /rhs);
-
-        float newW = lhs.w / rhs;
-
-        CustomQuaternion rv = new CustomQuaternion(newW, axis);
-
-        return rv;
-    }
-
     public CustomQuaternion Inverse()
     {
         CustomQuaternion rv = new CustomQuaternion();
@@ -59,11 +47,6 @@ public class CustomQuaternion
         return rv;
 
 
-    }
-
-    public float Magnitude()
-    {
-        return Mathf.Sqrt((w * w) + (x*x) + (y*y) + (z*z));
     }
 
     private void SetAxis(Vector3 v)
@@ -78,11 +61,6 @@ public class CustomQuaternion
         return new Vector3(x, y, z);
     }
 
-    public Quaternion ConvertToUnityQuaternion()
-    {
-        return new Quaternion(x,y,z,w);
-    }
-
     public Vector4 GetAxisAngle()
     {
         Vector4 rv = new Vector4();
@@ -94,10 +72,7 @@ public class CustomQuaternion
 
         if(sinValue == 0)
         {
-            rv.x = 0;
-            rv.y = 0;
-            rv.z = 0;
-
+            rv.x = 0; rv.y = 0; rv.z = 0;
             return rv;
         }
 
@@ -105,9 +80,9 @@ public class CustomQuaternion
         rv.y = y / Mathf.Sin(halfangle);
         rv.z = z / Mathf.Sin(halfangle);
 
-
         return rv;
     }
+
     public static CustomQuaternion Slerp(CustomQuaternion a, CustomQuaternion b,float t)
     {
         t = Mathf.Clamp01(t);

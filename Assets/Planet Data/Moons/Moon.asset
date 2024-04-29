@@ -13,14 +13,7 @@ MonoBehaviour:
   m_Name: Moon
   m_EditorClassIdentifier: 
   planetName: Moon
-  planetDesc: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-    posuere ipsum non lacus laoreet, non ullamcorper massa feugiat. Cras nec mauris
-    quis ante sodales tincidunt vel eu tellus. Ut a sollicitudin lacus. Suspendisse
-    ipsum leo, maximus a egestas non, bibendum a quam. Integer tristique quam a augue
-    bibendum facilisis. Sed semper lacus ac mattis euismod. Duis gravida magna aliquam
-    tortor finibus, sit amet consectetur lorem imperdiet. Vestibulum blandit ut dolor
-    ac fermentum. Ut eu eleifend enim. Ut volutpat varius condimentum. Vivamus eget
-    viverra risus. Morbi tempor rhoncus purus et varius. Donec scelerisque quam odio,
-    vel ultricies odio pulvinar non. Nam pulvinar elementum tincidunt.
+  planetDesc: Earth's loyal companion, a cratered world of stark beauty, casting
+    its silver glow upon the night.
   planetTilt: 7.25
   planetDist: 0

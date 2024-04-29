@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Jupiter
   m_EditorClassIdentifier: 
   planetName: Jupiter
-  planetDesc: 
-  planetTilt: 
-  planetDist: 
+  planetDesc: A gas giant with swirling bands of clouds and a colossal magnetic field,
+    crowned by the iconic Great Red Spot.
+  planetTilt: 3.1
+  planetDist: 5.2 AU
